@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: park_assets
+    database: raw_database
+    schema: park_assets
+    description: "Reference and master data for rides, tickets, merchandise, and weather."
+    config:
+      loaded_at_field: updated_at
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+
+    tables:
+      - name: ticket_types
+        description: "Ticket type master (pricing, category). One row per ticket type."
+        columns:
+          - name: ticket_id
+            description: "Primary key. Unique identifier for a ticket type."
+            tests:
+              - unique
+              - not_null
+
+      - name: rides
+        description: "Ride master data. One row per ride."
+        columns:
+          - name: ride_id
+            description: "Primary key. Unique identifier for a ride."
+            tests:
+              - unique
+              - not_null
+
+      - name: ops_rides
+        description: "Operational attributes for rides (staffing, maintenance schedule). One row per ride."
+        columns:
+          - name: ride_id
+            description: "Foreign key to rides. One row per ride."
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: marketing_rides
+        description: "Marketing metadata for rides (campaigns, tags). One row per ride."
+        columns:
+          - name: ride_id
+            description: "Foreign key to rides. One row per ride."
+            tests:
+              - unique
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: merchandise_products
+        description: "Merchandise product master. One row per product."
+        columns:
+          - name: product_id
+            description: "Primary key. Unique identifier for a merchandise product."
+            tests:
+              - unique
+              - not_null
+
+      - name: weather_data
+        description: "Daily weather observations. One row per date."
+        columns:
+          - name: weather_id
+            description: "Primary key. Unique identifier for a weather record."
+            tests:
+              - unique
+              - not_null
+          - name: date
+            description: "Calendar date of the weather observation."
+            tests:
+              - not_null
+              

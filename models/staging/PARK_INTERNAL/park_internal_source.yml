@@ -1,0 +1,117 @@
+version: 2
+
+sources:
+  - name: park_internal
+    database: raw_database
+    schema: park_internal
+    description: "Internal operational data: costs, safety incidents, and ride check-ins."
+    config:
+      loaded_at_field: updated_at
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+
+    tables:
+      - name: electricity_costs
+        description: "Ride-level electricity expense records. One row per cost entry."
+        columns:
+          - name: cost_id
+            description: "Primary key. Unique identifier for an electricity cost record."
+            tests:
+              - unique
+              - not_null
+          - name: ride_id
+            description: "Foreign key to rides."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: maintenance_costs
+        description: "Ride maintenance expense records. One row per expense entry."
+        columns:
+          - name: cost_id
+            description: "Primary key. Unique identifier for a maintenance cost record."
+            tests:
+              - unique
+              - not_null
+          - name: ride_id
+            description: "Foreign key to rides."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: supplies_costs
+        description: "Operational supplies expense records. One row per expense entry."
+        columns:
+          - name: cost_id
+            description: "Primary key. Unique identifier for a supplies cost record."
+            tests:
+              - unique
+              - not_null
+          - name: ride_id
+            description: "Foreign key to rides."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: staff_costs
+        description: "Ride staffing/labour cost records. One row per cost entry."
+        columns:
+          - name: cost_id
+            description: "Primary key. Unique identifier for a staff cost record."
+            tests:
+              - unique
+              - not_null
+          - name: ride_id
+            description: "Foreign key to rides."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: safety_incidents
+        description: "Ride safety incident log. One row per incident."
+        columns:
+          - name: incident_id
+            description: "Primary key. Unique identifier for a safety incident."
+            tests:
+              - unique
+              - not_null
+          - name: haunted_house_id
+            description: "Foreign key to rides (ride_id) — the ride/attraction where the incident occurred."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: checkins
+        description: "Ride check-in events. One row per customer ride visit."
+        columns:
+          - name: checkin_id
+            description: "Primary key. Unique identifier for a check-in event."
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "Foreign key to customers."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('customer_data', 'customers')
+                    field: customer_id
+          - name: haunted_house_id
+            description: "Foreign key to rides (ride_id) — the ride/attraction checked into."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+                    
