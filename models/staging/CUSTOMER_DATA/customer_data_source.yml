@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: customer_data
+    database: raw_database
+    schema: customer_data
+    description: "Customer master data and feedback submissions."
+    config:
+      loaded_at_field: updated_at
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+
+    tables:
+      - name: customers
+        description: "Master customer records. One row per customer."
+        columns:
+          - name: customer_id
+            description: "Primary key. Unique identifier for a customer."
+            tests:
+              - unique
+              - not_null
+
+      - name: customer_feedbacks
+        description: "Ride ratings and feedback submissions. One row per feedback event, linked to a specific ticket."
+        columns:
+          - name: feedback_id
+            description: "Primary key. Unique identifier for a feedback submission."
+            tests:
+              - unique
+              - not_null
+          - name: ticket_id
+            description: "Foreign key to the ticket associated with this feedback (via ticket_types or ticket sales)."
+            tests:
+              - not_null
+              
