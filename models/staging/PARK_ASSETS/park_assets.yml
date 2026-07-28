@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: ticket_types
+    description: "Cleaned and typed ticket type master data. One row per ticket type."
+    columns:
+      - name: ticket_id
+        description: "Primary key. Unique identifier for a ticket type."
+        tests:
+          - unique
+          - not_null
+
+  - name: stgrides
+    description: "Cleaned and typed ride master data. One row per ride."
+    columns:
+      - name: ride_id
+        description: "Primary key. Unique identifier for a ride."
+        tests:
+          - unique
+          - not_null
+
+  - name: ops_rides
+    description: "Cleaned and typed operational ride attributes (staffing, maintenance). One row per ride."
+    columns:
+      - name: ride_id
+        description: "Foreign key to rides. One row per ride."
+        tests:
+          - unique
+          - not_null
+
+  - name: marketing_rides
+    description: "Cleaned and typed marketing metadata for rides. One row per ride."
+    columns:
+      - name: ride_id
+        description: "Foreign key to rides. One row per ride."
+        tests:
+          - unique
+          - not_null
+
+  - name: merch_products
+    description: "Cleaned and typed merchandise product master data. One row per product."
+    columns:
+      - name: product_id
+        description: "Primary key. Unique identifier for a merchandise product."
+        tests:
+          - unique
+          - not_null
+
+  - name: weather_data
+    description: "Cleaned and typed daily weather observations. One row per date."
+    columns:
+      - name: weather_id
+        description: "Primary key. Unique identifier for a weather record."
+        tests:
+          - unique
+          - not_null
+      - name: weather_date
+        description: "Calendar date of the weather observation."
+        tests:
+          - not_null
