@@ -1,0 +1,3 @@
+{% macro calculate_net_revenue(price_column, discount_percent_column) %}
+    {{ price_column }} - ({{ price_column }} * {{ discount_percent_column }} / 100)
+{% endmacro %}

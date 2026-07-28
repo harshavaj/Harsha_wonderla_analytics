@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: martCustomer360
+    description: "One row per customer with total revenue and visits."
+    columns:
+      - name: customer_id
+        description: "Primary key for customer."
+        tests:
+          - unique
+          - not_null
+
+  - name: DailyParkPerformanceMart
+    description: "One row per day showing revenue and cost."
+    columns:
+      - name: date_day
+        description: "Primary key, one row per day."
+        tests:
+          - unique
+          - not_null
+
+  - name: FinanceMart
+    description: "Daily revenue vs cost."
+    columns:
+      - name: report_date
+        description: "One row per day."
+        tests:
+          - unique
+
+  - name: RideAnalyticsMart
+    description: "One row per ride with cost and activity."
+    columns:
+      - name: ride_id
+        description: "Primary key for ride."
+        tests:
+          - unique
+          - not_null
