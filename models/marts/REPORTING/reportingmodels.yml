@@ -35,3 +35,29 @@ models:
         tests:
           - unique
           - not_null
+  - name: CustomerVisitsMart
+    description: "One row per customer check-in/visit."
+    columns:
+      - name: checkin_id
+        description: "Primary key, one row per visit."
+        tests:
+          - unique
+          - not_null
+
+  - name: CustomerSegmentationMart
+    description: "One row per customer with a business segment label based on visits and spend."
+    columns:
+      - name: customer_id
+        description: "Primary key for customer."
+        tests:
+          - unique
+          - not_null
+
+  - name: WeatherImpactMart
+    description: "One row per day showing weather conditions and ticket revenue/attendance."
+    columns:
+      - name: weather_date
+        description: "Primary key, one row per day."
+        tests:
+          - unique
+          - not_null
