@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: TicketSalesCOREfct
+    description: "Combined ticket sales fact table (online and physical channels)."
+    columns:
+      - name: sale_id
+        description: "Primary key for a ticket sale."
+        tests:
+          - unique
+          - not_null
+
+  - name: MerchSalesCOREfct
+    description: "Combined merchandise sales fact table (online and physical channels)."
+    columns:
+      - name: sale_id
+        description: "Primary key for a merchandise sale."
+        tests:
+          - unique
+          - not_null
+
+  - name: OperatingExpenseCOREfct
+    description: "Combined operating expense fact table (electricity, maintenance, supplies, staff)."
+    columns:
+      - name: cost_id
+        description: "Primary key for a cost record."
+        tests:
+          - not_null

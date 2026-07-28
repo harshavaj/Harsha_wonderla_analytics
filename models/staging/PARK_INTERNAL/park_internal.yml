@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: electricity_costs
+    description: "Cleaned and typed ride electricity expense records. One row per cost entry."
+    columns:
+      - name: cost_id
+        description: "Primary key. Unique identifier for an electricity cost record."
+        tests:
+          - unique
+          - not_null
+
+  - name: maintenance_costs
+    description: "Cleaned and typed ride maintenance expense records. One row per expense entry."
+    columns:
+      - name: cost_id
+        description: "Primary key. Unique identifier for a maintenance cost record."
+        tests:
+          - unique
+          - not_null
+
+  - name: supplies_costs
+    description: "Cleaned and typed operational supplies expense records. One row per expense entry."
+    columns:
+      - name: cost_id
+        description: "Primary key. Unique identifier for a supplies cost record."
+        tests:
+          - unique
+          - not_null
+
+  - name: staff_costs
+    description: "Cleaned and typed ride staffing/labour cost records. One row per cost entry."
+    columns:
+      - name: cost_id
+        description: "Primary key. Unique identifier for a staff cost record."
+        tests:
+          - unique
+          - not_null
+
+  - name: safety_incidents
+    description: "Cleaned and typed ride safety incident log. One row per incident."
+    columns:
+      - name: incident_id
+        description: "Primary key. Unique identifier for a safety incident."
+        tests:
+          - unique
+          - not_null
+
+  - name: checkins
+    description: "Cleaned and typed ride check-in events. One row per customer ride visit."
+    columns:
+      - name: checkin_id
+        description: "Primary key. Unique identifier for a check-in event."
+        tests:
+          - unique
+          - not_null

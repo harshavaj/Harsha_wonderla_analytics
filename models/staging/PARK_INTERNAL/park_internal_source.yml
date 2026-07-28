@@ -101,12 +101,14 @@ sources:
               - unique
               - not_null
           - name: customer_id
-            description: "Foreign key to customers."
+            description: "Foreign key to customers. Note: same customer_id coverage limitation as sales tables — test set to warn rather than fail."
             tests:
               - relationships:
                   arguments:
                     to: source('customer_data', 'customers')
                     field: customer_id
+                  config:
+                    severity: warn
           - name: haunted_house_id
             description: "Foreign key to rides (ride_id) — the ride/attraction checked into."
             tests:

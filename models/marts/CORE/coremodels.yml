@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: customerCORE
+    description: "Customer dimension table."
+    columns:
+      - name: customer_id
+        description: "Primary key for customer."
+        tests:
+          - unique
+          - not_null
+
+  - name: ticket_typeCORE
+    description: "Ticket type dimension table."
+    columns:
+      - name: ticket_id
+        description: "Primary key for ticket type."
+        tests:
+          - unique
+          - not_null
+
+  - name: dateCORE
+    description: "Date dimension table, generated for reporting."
+    columns:
+      - name: date_day
+        description: "Primary key, one row per calendar date."
+        tests:
+          - unique
+          - not_null
+
+  - name: weatherCORE
+    description: "Weather dimension table."
+    columns:
+      - name: weather_id
+        description: "Primary key for weather record."
+        tests:
+          - unique
+          - not_null

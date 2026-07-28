@@ -1,0 +1,109 @@
+version: 2
+
+sources:
+  - name: sales
+    database: raw_database
+    schema: sales
+    description: "Ticket and merchandise sales transactions across online and physical channels."
+    config:
+      loaded_at_field: updated_at
+      freshness:
+        warn_after: {count: 12, period: hour}
+        error_after: {count: 24, period: hour}
+
+    tables:
+      - name: ticket_sales_online
+        description: "Online ticket purchases. One row per sale transaction."
+        columns:
+          - name: sale_id
+            description: "Primary key. Unique identifier for a ticket sale."
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "Foreign key to customers. Note: this sample dataset's customers table only contains a narrow slice of the full customer ID space (IDs 9001-10000), so most sales rows reference customer_ids outside that range. Test set to warn rather than fail for this known data limitation."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('customer_data', 'customers')
+                    field: customer_id
+                  config:
+                    severity: warn
+          - name: ticket_id
+            description: "Foreign key to ticket_types."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'ticket_types')
+                    field: ticket_id
+
+      - name: ticket_sales_physical
+        description: "Counter (in-person) ticket purchases. One row per sale transaction."
+        columns:
+          - name: sale_id
+            description: "Primary key. Unique identifier for a ticket sale."
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "Foreign key to customers. Note: same customer_id coverage limitation as ticket_sales_online — test set to warn rather than fail."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('customer_data', 'customers')
+                    field: customer_id
+                  config:
+                    severity: warn
+          - name: ticket_id
+            description: "Foreign key to ticket_types."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'ticket_types')
+                    field: ticket_id
+
+      - name: merchandise_sales_online
+        description: "Online merchandise order lines. One row per order line. Note: ~24% of rows have missing values (quantity, price, dates) due to a truncation defect in the source data around product names — handle nulls in staging."
+        columns:
+          - name: sale_id
+            description: "Primary key. Unique identifier for a merchandise sale line."
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: "Foreign key to merchandise_products."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'merchandise_products')
+                    field: product_id
+          - name: haunted_house_id
+            description: "Foreign key to rides (ride_id) — the ride/attraction associated with this sale, if any."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
+
+      - name: merchandise_sales_physical
+        description: "In-park merchandise order lines. One row per order line. Note: same truncated-row data quality issue as merchandise_sales_online."
+        columns:
+          - name: sale_id
+            description: "Primary key. Unique identifier for a merchandise sale line."
+            tests:
+              - unique
+              - not_null
+          - name: product_id
+            description: "Foreign key to merchandise_products."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'merchandise_products')
+                    field: product_id
+          - name: haunted_house_id
+            description: "Foreign key to rides (ride_id) — the ride/attraction associated with this sale, if any."
+            tests:
+              - relationships:
+                  arguments:
+                    to: source('park_assets', 'rides')
+                    field: ride_id
