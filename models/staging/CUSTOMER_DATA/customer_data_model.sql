@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_customers
+  - name: stg_customer
     description: "Cleaned and typed customer master data. One row per customer."
     columns:
       - name: customer_id
@@ -10,7 +10,7 @@ models:
           - unique
           - not_null
 
-  - name: stg_customer_feedbacks
+  - name: customer_feedbacks
     description: "Cleaned and typed customer feedback submissions. One row per feedback event."
     columns:
       - name: feedback_id
@@ -22,4 +22,3 @@ models:
         description: "Foreign key to the ticket associated with this feedback."
         tests:
           - not_null
-          
